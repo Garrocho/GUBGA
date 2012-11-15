@@ -42,7 +42,7 @@ public class DialogoCadastro extends Dialogo {
 	}
 	
 	@Override
-	public void adicionarElementos() {
+	protected void adicionarElementos() {
 		painelNick.add(labelNick);
 		painelNick.add(fieldNick);
 		
@@ -63,11 +63,11 @@ public class DialogoCadastro extends Dialogo {
 	}
 
 	@Override
-	public void configurarEventos() {
+	protected void configurarEventos() {
 	}
 
 	@Override
-	public void criarElementos() {
+	protected void criarElementos() {
 		painelNorte = new JPanel();
 		painelCentro = new JPanel(new GridLayout(2,1));
 		painelSul = new JPanel();
@@ -87,7 +87,7 @@ public class DialogoCadastro extends Dialogo {
 	}
 
 	@Override
-	public void customizarElementos() {
+	protected void customizarElementos() {
 		labelNick.setFont(new Font(Font.DIALOG, Font.BOLD, 17));
 		labelSenha.setFont(new Font(Font.DIALOG, Font.BOLD, 17));
 		

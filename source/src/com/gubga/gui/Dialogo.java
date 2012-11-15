@@ -13,15 +13,15 @@ public abstract class Dialogo extends JDialog {
 		super();
 	}
 	
-	public abstract void criarElementos();
+	protected abstract void criarElementos();
 	
-	public abstract void adicionarElementos();
+	protected abstract void adicionarElementos();
 	
-	public abstract void customizarElementos();
+	protected abstract void customizarElementos();
 	
-	public abstract void configurarEventos();
+	protected abstract void configurarEventos();
 
-	public void definirPropriedades(Component janelaPai, String titulo) {
+	protected void definirPropriedades(Component janelaPai, String titulo) {
 		pack();
 		setTitle(titulo);
 		//setIconImage(Toolkit.getDefaultToolkit().getImage("Recursos//Icones//Imagens//logo.png"));
