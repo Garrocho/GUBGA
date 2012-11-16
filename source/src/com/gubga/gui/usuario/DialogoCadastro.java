@@ -8,6 +8,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,9 +16,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.gubga.classes.TamanhoMaximo;
 import com.gubga.gui.Dialogo;
+
+import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
 public class DialogoCadastro extends Dialogo {
 
@@ -28,7 +33,9 @@ public class DialogoCadastro extends Dialogo {
 	private JLabel labelNick, labelSenha, labelImagem;
 	private JPanel painelNorte, painelCentro, painelSul, painelNick, painelSenha;
 	
-	public static void main(String args[]) {
+	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
+		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
+		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
 		new DialogoCadastro(null);
 	}
 
