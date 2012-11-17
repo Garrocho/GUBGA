@@ -8,5 +8,8 @@
 	<classpathentry kind="lib" path="lib/syntheticaAluOxide.jar"/>
 	<classpathentry kind="lib" path="lib/syntheticaBlackEye.jar"/>
 	<classpathentry kind="lib" path="lib/syntheticaWhiteVision.jar"/>
+	<classpathentry kind="lib" path="lib/syntheticaOrangeMetallic.jar"/>
+	<classpathentry kind="lib" path="lib/syntheticaBlackStar.jar"/>
+	<classpathentry kind="lib" path="lib/syntheticaClassy.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
