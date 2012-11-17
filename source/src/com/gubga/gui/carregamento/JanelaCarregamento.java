@@ -18,6 +18,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 import com.gubga.gui.Janela;
+import com.gubga.gui.carregamento.eventos.TratadorEventosJanelaCarregamento;
+
 import static com.gubga.classes.Recursos.*;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
@@ -67,6 +69,11 @@ public class JanelaCarregamento extends Janela {
 
 	@Override
 	protected void configurarEventos() {
+		TratadorEventosJanelaCarregamento tratadorEventos = new TratadorEventosJanelaCarregamento(this);
+		botaoDiretorio.addActionListener(tratadorEventos);
+		botaoSair.addActionListener(tratadorEventos);
+		botaoCarregar.addActionListener(tratadorEventos);
+		botaoLimpar.addActionListener(tratadorEventos);
 	}
 
 	@Override
