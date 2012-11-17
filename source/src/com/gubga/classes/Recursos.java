@@ -1,9 +1,7 @@
 package com.gubga.classes;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
@@ -11,6 +9,8 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.gubga.gui.Janela;
 
 public class Recursos {
 	
@@ -53,16 +53,12 @@ public class Recursos {
 	}
 	
 	public static Image adicionaImagem(String endrecoImagem) {
-		Image imagem = Toolkit.getDefaultToolkit().getImage(endrecoImagem);
+		Image imagem = Toolkit.getDefaultToolkit().getImage(Janela.getResource(endrecoImagem));
 		Image menor = imagem.getScaledInstance(32, 32, Image.SCALE_DEFAULT);
 		return menor;
 	}
-	
+
 	public static void customizarBotao(JButton botao) {
-		botao.setBackground(new Color(0,185,242));
-		botao.setFont(new Font(Font.DIALOG, Font.BOLD, 15));
-		botao.setFocusable(false);
 		botao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
-
 }

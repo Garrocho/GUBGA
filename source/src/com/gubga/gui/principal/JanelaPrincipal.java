@@ -1,7 +1,5 @@
 package com.gubga.gui.principal;
 
-import static com.gubga.classes.Recursos.customizarBotao;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -110,8 +108,8 @@ public class JanelaPrincipal extends Janela {
 		tabelaBanidos.getColumn("NICK").setPreferredWidth(30);
 		tabelaBanidos.getColumn("MOTIVO").setPreferredWidth(160);
 		
-		customizarBotao(botaoLimpar);
-		customizarBotao(botaoSair);
+		//customizarBotao(botaoLimpar);
+//		/customizarBotao(botaoSair);
 	}
 
 	public JanelaPrincipal getThis() {
