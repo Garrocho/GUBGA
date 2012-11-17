@@ -74,6 +74,7 @@ public class JanelaCarregamento extends Janela {
 		botaoSair.addActionListener(tratadorEventos);
 		botaoCarregar.addActionListener(tratadorEventos);
 		botaoLimpar.addActionListener(tratadorEventos);
+		tabelaUsuarios.addMouseListener(tratadorEventos);
 	}
 
 	@Override
@@ -133,6 +134,7 @@ public class JanelaCarregamento extends Janela {
 		botaoCarregar.setToolTipText("Carregar Contas Existentes da Pasta do Garena Plus.");
 		botaoSair.setToolTipText("Sair do GUBGA.");
 		botaoLimpar.setToolTipText("Limpar Tabela de Usuários do Garena Plus.");
+		tabelaUsuarios.setToolTipText("Dê um Duplo Clique na Conta a Ser Utilizada.");
 	}
 
 	public JanelaCarregamento getThis() {
