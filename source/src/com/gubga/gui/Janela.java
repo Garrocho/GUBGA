@@ -83,67 +83,76 @@ public abstract class Janela extends JFrame {
 
 		return janelaAbrir.getSelectedFile() != null ? janelaAbrir.getSelectedFile().getPath() : null;
 	}
-
-	/** Janela para selecionar um diretorio
-	 * @param componentePai <code>Component</code> sobre o qual esta janela será aberta, a qual esta sera "filha"
-	 * @param titulo <code>String</code> com o titulo da janela
-	 * @param diretorioCorrente <code>String</code> com o diretorio onde a janela de abrir inicializara
-	 * @return <code>String</code> com o endereço do diretorio selecionado, caso nenhum diretorio seja selecionado, é retornado <code>null</code>
-	 * @see  JFileChooser 
+	
+	/** 
+	 * Exibe uma caixa de dialogo <code>javax.swing.JFileChooser</code> para 
+	 * o usuario indicar o nome do diretorio que sera aberto. 
+	 * 
+	 * @param janelaPai objeto <code>java.awt.Component</code> que identifica a
+	 *        janela pai sobre a qual a janela <code>JFileChooser</code> sera
+	 *        exibida.  
+	 * @param titulo <code>String</code> com o nome da barra de titulo da caixa 
+	 *        de dialogo.
+	 *        
+	 * @return <code>String</code> com o nome do arquivo a ser aberto. 
+	 *         Se o usuário cancelar a operacao (clicar no botao "Cancelar") sera
+	 *         retornado <code>null</code>.
+	 *         
+	 * @see java.awt.Component
 	 */
-	public static String janelaAbrirDiretorio(Component componentePai, String titulo, String diretorioCorrente){
-		JFileChooser janelaAbrir = new JFileChooser(titulo);
+	public static String dialogoAbrirDiretorio(Component janelaPai, String titulo) {
 
-		janelaAbrir.setAcceptAllFileFilterUsed(false);
-		janelaAbrir.setDialogType(JFileChooser.OPEN_DIALOG);
-		janelaAbrir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		janelaAbrir.setDialogTitle(titulo);
+		JFileChooser dialogoAbrir = new JFileChooser();
 
-		if(diretorioCorrente != null){
-			if (diretorioCorrente.isEmpty()){
-				janelaAbrir.setCurrentDirectory(new File("."));
-			}
-			else{
-				janelaAbrir.setCurrentDirectory(new File(diretorioCorrente));
-			}
-		}
+		dialogoAbrir.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		dialogoAbrir.setDialogTitle(titulo);
+		dialogoAbrir.setApproveButtonText("Abrir");
+		dialogoAbrir.setApproveButtonToolTipText("Abre um diretorio em disco.");
+		dialogoAbrir.setAcceptAllFileFilterUsed(false);
 
-		janelaAbrir.showOpenDialog(componentePai);
+		int opcao = dialogoAbrir.showOpenDialog(janelaPai);
 
-		return janelaAbrir.getSelectedFile() != null ? janelaAbrir.getSelectedFile().getPath() : null;
+		if (opcao == JFileChooser.CANCEL_OPTION)
+			return null;
+
+		return dialogoAbrir.getSelectedFile().getPath();
 	}
-
-	/** Janela para salvar um arquivo
-	 * @param componentePai <code>Component</code> sobre o qual esta janela será aberta, a qual esta sera "filha"
-	 * @param titulo <code>String</code> com o titulo da janela
-	 * @param diretorioCorrente <code>String</code> com o diretorio onde a janela de abrir inicializara
-	 * @param opcaoTodosArquivos <code>boolean</code> informando se a opcao(filtro) Todos Arquivos será mostrada ou não
-	 * @param nomeFiltro <code>String</code> com o nome do filtro de extensões
-	 * @param extensao <code>String...</code> com as extensões usadas no filtro
-	 * @return <code>String</code> com o endereço onde o arquivo será salvo, caso nenhum arquivo seja selecionado, é retornado <code>null</code>
-	 * @see  JFileChooser 
+	
+	/** 
+	 * Exibe uma caixa de dialogo <code>javax.swing.JFileChooser</code> para 
+	 * o usuario indicar o nome do diretorio e arquivo que sera aberto. 
+	 * 
+	 * @param janelaPai objeto <code>java.awt.Component</code> que identifica a
+	 *        janela pai sobre a qual a janela <code>JFileChooser</code> sera
+	 *        exibida.  
+	 * @param titulo <code>String</code> com o nome da barra de titulo da caixa 
+	 *        de dialogo.
+	 *        
+	 * @return <code>String</code> com o nome do arquivo a ser aberto. 
+	 *         Se o usuário cancelar a operacao (clicar no botao "Cancelar") sera
+	 *         retornado <code>null</code>.
+	 *         
+	 * @see java.awt.Component
 	 */
-	public static String janelaSalvarArquivo(Component componentePai, String titulo, String diretorioCorrente, boolean opcaoTodosArquivos, String nomeFiltro, String... extensao){
-		JFileChooser janelaSalvar = new JFileChooser(titulo);
+	public static String dialogoAbrirArquivo(Component janelaPai, String titulo) {
 
-		janelaSalvar.setAcceptAllFileFilterUsed(false);
-		janelaSalvar.setDialogType(JFileChooser.SAVE_DIALOG);
-		janelaSalvar.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		janelaSalvar.setDialogTitle(titulo);
-		janelaSalvar.setFileFilter(new FileNameExtensionFilter(nomeFiltro, extensao));
-		janelaSalvar.setAcceptAllFileFilterUsed(opcaoTodosArquivos);
+		JFileChooser dialogoAbrir = new JFileChooser();
 
-		if(diretorioCorrente != null){
-			if (diretorioCorrente.isEmpty()){
-				janelaSalvar.setCurrentDirectory(new File("."));
-			}
-			else{
-				janelaSalvar.setCurrentDirectory(new File(diretorioCorrente));
-			}
-		}
+		dialogoAbrir.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		dialogoAbrir.setDialogTitle(titulo);
+		dialogoAbrir.setApproveButtonText("Abrir");
+		dialogoAbrir.setApproveButtonToolTipText("Abre um arquivo em disco.");
+		dialogoAbrir.setFileFilter(new FileNameExtensionFilter("Mjpeg", "Mjpeg"));
+		dialogoAbrir.setAcceptAllFileFilterUsed(false);
 
-		janelaSalvar.showSaveDialog(componentePai);
+		int opcao = dialogoAbrir.showOpenDialog(janelaPai);
 
-		return janelaSalvar.getSelectedFile() != null ? janelaSalvar.getSelectedFile().getPath() : null;
+		if (opcao == JFileChooser.CANCEL_OPTION)
+			return null;
+
+		File arquivo = dialogoAbrir.getSelectedFile();
+		String nomeArquivo = arquivo.getPath();
+
+		return nomeArquivo;
 	}
 }
