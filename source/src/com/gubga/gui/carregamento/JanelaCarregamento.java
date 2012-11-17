@@ -131,4 +131,28 @@ public class JanelaCarregamento extends Janela {
 	public JanelaCarregamento getThis() {
 		return this;
 	}
+
+	public JTable getTabelaUsuarios() {
+		return tabelaUsuarios;
+	}
+
+	public JTextField getCampoTextoDiretorio() {
+		return campoTextoDiretorio;
+	}
+
+	public JButton getBotaoCarregar() {
+		return botaoCarregar;
+	}
+
+	public JButton getBotaoLimpar() {
+		return botaoLimpar;
+	}
+
+	public JButton getBotaoSair() {
+		return botaoSair;
+	}
+
+	public JButton getBotaoDiretorio() {
+		return botaoDiretorio;
+	}
 }
