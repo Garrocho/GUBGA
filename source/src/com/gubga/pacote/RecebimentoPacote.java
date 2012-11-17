@@ -6,7 +6,6 @@ import static com.gubga.classes.Descriptografar.strFromBytes16;
 import static com.gubga.classes.Descriptografar.unsignedByte;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -34,11 +33,6 @@ public class RecebimentoPacote implements PacketReceiver {
 
 			if (proto.equals(("TCP"))) {
 				TCPPacket tp = (TCPPacket) packet;
-				try {
-					System.out.println("Dados: " + new String(tp.data, "UTF-8"));
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
 				if (tp.src_port == 8687) {
 					byte[] packetType = new byte[1];
 

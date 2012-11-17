@@ -1,14 +1,16 @@
 package com.gubga.gui.carregamento;
 
+import static com.gubga.classes.Recursos.customizarBotao;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,8 +21,6 @@ import javax.swing.table.DefaultTableModel;
 
 import com.gubga.gui.Janela;
 import com.gubga.gui.carregamento.eventos.TratadorEventosJanelaCarregamento;
-
-import static com.gubga.classes.Recursos.*;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
@@ -39,13 +39,13 @@ public class JanelaCarregamento extends Janela {
 		new JanelaCarregamento(null);
 	}
 
-	public JanelaCarregamento(Component janelaPai) {
+	public JanelaCarregamento(JFrame janelaPai) {
 		super();
 		criarElementos();
 		customizarElementos();
 		configurarEventos();
 		adicionarElementos();
-		definirPropriedades(janelaPai, "GUBGA - Carregamento de Usuários");
+		definirPropriedades(janelaPai, "GUBGA - Carregamento de Usuários", null);
 	}
 
 	@Override

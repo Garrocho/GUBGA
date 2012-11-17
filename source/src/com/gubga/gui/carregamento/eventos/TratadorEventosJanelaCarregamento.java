@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.gubga.gui.Janela;
 import com.gubga.gui.carregamento.JanelaCarregamento;
+import com.gubga.gui.principal.JanelaPrincipal;
 
 public class TratadorEventosJanelaCarregamento extends MouseAdapter implements ActionListener {
 
@@ -77,8 +78,8 @@ public class TratadorEventosJanelaCarregamento extends MouseAdapter implements A
 	public void mouseClicked(MouseEvent evento) {
 		if (evento.getClickCount() == 2 && evento.getSource() == janelaCarregamento.getTabelaUsuarios()) {
 			int selecionado = janelaCarregamento.getTabelaUsuarios().getSelectedRow();
-			String userId = janelaCarregamento.getTabelaUsuarios().getValueAt(selecionado, 0).toString();
-			System.out.println(userId);
+			String usuario = janelaCarregamento.getTabelaUsuarios().getValueAt(selecionado, 0).toString();
+			new JanelaPrincipal(janelaCarregamento, usuario);
 		}
 	}
 }
