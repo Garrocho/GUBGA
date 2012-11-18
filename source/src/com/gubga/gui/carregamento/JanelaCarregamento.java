@@ -6,7 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,14 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 import com.gubga.gui.Janela;
 import com.gubga.gui.carregamento.eventos.TratadorEventosJanelaCarregamento;
-
-import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
 public class JanelaCarregamento extends Janela {
 
@@ -32,12 +27,6 @@ public class JanelaCarregamento extends Janela {
 	private JTextField campoTextoDiretorio;
 	private JButton botaoCarregar, botaoLimpar, botaoSair, botaoDiretorio;
 	private JPanel painelNorte, painelCentro, painelSul, painelDiretorio;
-
-	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
-		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
-		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
-		new JanelaCarregamento(null);
-	}
 
 	public JanelaCarregamento(JFrame janelaPai) {
 		super();

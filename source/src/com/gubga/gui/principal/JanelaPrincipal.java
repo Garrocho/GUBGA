@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -17,8 +18,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.gubga.gui.Janela;
+import com.gubga.gui.ajuda.MenuAjuda;
+import com.gubga.gui.banlist.MenuBanList;
+
+import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
 
 /**
@@ -36,6 +43,12 @@ public class JanelaPrincipal extends Janela {
 	private GridBagConstraints inserts;
 	private JLabel rotuloLogo, rotuloHelp;
 	private String usuario;
+	
+	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
+		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
+		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
+		new JanelaPrincipal(null, "10661343");
+	}
 
 	/**
 	 * Este e o construtor. Ele cria os menus e adiciona a janela a barra de menus contendo os modulos do sistema.
@@ -52,14 +65,18 @@ public class JanelaPrincipal extends Janela {
 
 	@Override
 	protected void adicionarElementos() {
+		
+		new MenuBanList(this);
+		new MenuAjuda(this);
+		
 		barraMenu.add(menuSair);
 		setJMenuBar(barraMenu);
 		inserts.gridx = 0;
 		inserts.gridy = 0;
-		painelLogo.add(rotuloLogo, inserts);
+		//painelLogo.add(rotuloLogo, inserts);
 		inserts.gridx = 0;
 		inserts.gridy = 1;
-		painelLogo.add(rotuloHelp, inserts);
+		//painelLogo.add(rotuloHelp, inserts);
 		add(painelLogo);
 	}
 
@@ -83,8 +100,8 @@ public class JanelaPrincipal extends Janela {
 	protected void criarElementos() {
 		painelLogo = new JPanel(new GridBagLayout());
 		inserts = new GridBagConstraints();
-		rotuloLogo = new JLabel(new ImageIcon(Janela.getResource("logo.png")));
-		rotuloHelp = new JLabel(new ImageIcon(Janela.getResource("descricao.png")));
+		//rotuloLogo = new JLabel(new ImageIcon(Janela.getResource("logo.png")));
+		//rotuloHelp = new JLabel(new ImageIcon(Janela.getResource("descricao.png")));
 		barraMenu = new JMenuBar();
 		menuSair  = new JMenuItem("Sair");
 	}
