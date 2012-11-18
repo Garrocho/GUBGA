@@ -1,17 +1,28 @@
 package com.gubga.app;
 
-import java.io.IOException;
+import java.text.ParseException;
 
-import jpcap.JpcapCaptor;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
-import com.gubga.pacote.RecebimentoPacote;
+import com.gubga.gui.carregamento.JanelaCarregamento;
+import com.gubga.gui.principal.JanelaPrincipal;
+
+import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
 
 public class IntGabalise {
 
-	public static void main(String args[]) throws IOException {
-		jpcap.NetworkInterface[] devices = JpcapCaptor.getDeviceList();
-		JpcapCaptor jpcap = JpcapCaptor.openDevice(devices[0], 2000, true, 20);
-		jpcap.loopPacket(-1, new RecebimentoPacote());
+	//public static void main(String args[]) throws IOException {
+		//jpcap.NetworkInterface[] devices = JpcapCaptor.getDeviceList();
+		//JpcapCaptor jpcap = JpcapCaptor.openDevice(devices[0], 2000, true, 20);
+		//jpcap.loopPacket(-1, new RecebimentoPacote());
+	//}
+	
+	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
+		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
+		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
+		//new JanelaCarregamento(null);
+		new JanelaPrincipal(null, "10661343");
 	}
 }
