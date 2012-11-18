@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import com.gubga.gui.Menu;
 import com.gubga.gui.principal.JanelaPrincipal;
 
 /**
@@ -17,40 +17,53 @@ import com.gubga.gui.principal.JanelaPrincipal;
  * 
  * @author Charles Garrocho
  */
-public class MenuAjuda extends JMenu {
+public class MenuAjuda extends Menu {
 
 	private static final long serialVersionUID = 1L;
+	private JMenuItem menuItemSobre;
 	
 	/**
 	 * Este e o construtor. Ele constroi o menu "Ajuda" e o adiciona na barra de menus na <code>JanelaPrincipal</code>.
 	 * 
-	 * @param janelaPrincipal <code>JFrame</code> Janela principal da aplicacao, ela e utilizada para adicionar o menu Ajuda.
+	 * @param janelaPrincipal <code>JanelaPrincipal</code> Janela principal da aplicacao, ela e utilizada para adicionar o menu Ajuda.
 	 */
 	public MenuAjuda(JanelaPrincipal janelaPrincipal) {
-		
-		super("Ajuda");
+		super("Ajuda", janelaPrincipal);
+		criarElementos();
+		customizarElementos();
+		configurarEventos();
+		adicionarElementos();
+	}
+	
+	@Override
+	protected void adicionarElementos() {
+		add(menuItemSobre);
+		getJanelaPrincipal().getBarraMenu().add(this);
+	}
+
+	@Override
+	protected void configurarEventos() {
+		menuItemSobre.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent evento) {
+				new DialogoSobre(getJanelaPrincipal());
+			}
+		});
+	}
+
+	@Override
+	protected void criarElementos() {
+		menuItemSobre = new JMenuItem("Sobre");
+	}
+
+	@Override
+	protected void customizarElementos() {
 		setFont(new Font("Arial", Font.BOLD, 12));
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		setIcon(new ImageIcon(getClass().getResource("/icones/AJUDA.png")));
 		setMnemonic(KeyEvent.VK_A);
 		
-		JMenuItem menuItemSobre = new JMenuItem("Sobre");
 		menuItemSobre.setFont(new Font("Arial", Font.BOLD, 12));
 		menuItemSobre.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuItemSobre.setMnemonic(KeyEvent.VK_S);
-		
-		// Adicionando um tratamento de evento para o menu item sobre.
-		menuItemSobre.addActionListener( new ActionListener() {
-			public void actionPerformed(ActionEvent evento) {
-				new DialogoSobre();
-			}
-		});
-		
-		// Adiciona o menu iten sobre ao menu ajuda.
-		add(menuItemSobre);
-		
-		// Adiciona o menu ajuda a barra de menus da janela principal.
-		janelaPrincipal.getBarraMenu().add(this);
 	}
-
-} // classe Menu Ajuda.
+}

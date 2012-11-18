@@ -1,46 +1,54 @@
 package com.gubga.gui.ajuda;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
+
+import com.gubga.gui.Dialogo;
 
 /**
  * Esta classe extende um <code>JDialog</code> e cria uma interface grafica com as informacoes do software e equipe.
  * 
  * @author Charles Garrocho
  */
-public class DialogoSobre extends JDialog {
+public class DialogoSobre extends Dialogo {
 	
 	private static final long serialVersionUID = 1L;
+	private JTabbedPane tabbedPane;
+	private JPanel painel1;
+	private JPanel painel11;
+	private Image img;
+	private JPanel painel12;
+	private JPanel painel2;
+	private JPanel painel3;
 	
 	/**
 	 * Este e o construtor. Ele constroi a interface grafica do dialogo sobre.
 	 */
-	public DialogoSobre() {
+	public DialogoSobre(JFrame janelaPai) {
 		
 		super();
-		setTitle("Sobre o SIGE");
+		criarElementos();
+		customizarElementos();
+		configurarEventos();
+		adicionarElementos();
+		definirPropriedades(janelaPai, "Sobre o GUBGA", new Dimension(610, 120));
+	}
+
+	@Override
+	protected void adicionarElementos() {
+		//painel11.add(new JLabel(new ImageIcon(img), SwingConstants.LEFT));
 		
-		// Cria um painel de abas. 
-		JTabbedPane tabbedPane = new JTabbedPane();
-		
-		// Cria o conteúdo da primeira aba e coloca no painel 1.  
-		JPanel painel1 = new JPanel(new GridLayout(1,2));
-		JPanel painel11 = new JPanel();
-		Image img = Toolkit.getDefaultToolkit().getImage((getClass().getResource("/icones/logo.png")));  
-		painel11.add(new JLabel(new ImageIcon(img), SwingConstants.LEFT));
-		
-		JPanel painel12 = new JPanel(new GridLayout(3,1));
-		painel12.add(new JLabel("Sistema Integrado de Gestao Eleitoral", SwingConstants.CENTER));
+		painel12.add(new JLabel("Gerenciador de Usuários Banidos do Garena", SwingConstants.CENTER));
 		painel12.add(new JLabel("Versao: 1.0", SwingConstants.CENTER));
 		painel12.add(new JLabel("Copyright(c), BUILD SYSTEM", SwingConstants.CENTER));
 		painel1.add(painel11);
@@ -50,10 +58,7 @@ public class DialogoSobre extends JDialog {
 		tabbedPane.addTab("Sobre", null, painel1, "Informacoes do software.");
 		
 		// Cria o conteúdo da segunda aba e coloca no painel 2.  
-		JPanel painel2 = new JPanel();
-		JPanel painel3 = new JPanel();
-		painel3.add(new JLabel("Desenvolvedores: Barbara Silverio, Charles Tim Batista Garrocho"));
-		painel2.add(new JLabel("Curso Superior de Tecnologia Em Sistemas Para Internet."), BorderLayout.NORTH);
+		painel3.add(new JLabel("Desenvolvedor: Charles Tim Batista Garrocho"));
 		painel2.add(painel3, BorderLayout.SOUTH);
 		
 		// Adiciona o conteúdo do painel 2 na segunda aba do TabbedPane.
@@ -61,14 +66,29 @@ public class DialogoSobre extends JDialog {
 
 		// Adiciona o tabbedPane ao container da janela.
 		add(tabbedPane);
+		
+	}
 
-		// Define as propriedades do dialogo.
-		setSize(610, 120);
-		setIconImage(Toolkit.getDefaultToolkit().getImage((getClass().getResource("/icones/icone.png"))));
-		setLocationRelativeTo(null);
-		setModal(true);
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setResizable(false);
-		setVisible(true);
+	@Override
+	protected void configurarEventos() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void criarElementos() {
+		tabbedPane = new JTabbedPane();
+		painel1 = new JPanel(new GridLayout(1,2));
+		painel11 = new JPanel();
+		//img = Toolkit.getDefaultToolkit().getImage(Dialogo.getResource("logo.png"));  
+		painel12 = new JPanel(new GridLayout(3,1));
+		painel2 = new JPanel();
+		painel3 = new JPanel();
+	}
+
+	@Override
+	protected void customizarElementos() {
+		// TODO Auto-generated method stub
+		
 	} 
 }
