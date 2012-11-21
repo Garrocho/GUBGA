@@ -1,10 +1,9 @@
 package com.gubga.gui.principal;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,14 +12,19 @@ import java.awt.event.WindowEvent;
 import java.text.ParseException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.gubga.classes.TamanhoMaximo;
 import com.gubga.gui.Janela;
 import com.gubga.gui.ajuda.MenuAjuda;
 import com.gubga.gui.banlist.MenuBanList;
@@ -37,12 +41,15 @@ import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 public class JanelaPrincipal extends Janela {
 
 	private static final long serialVersionUID = 1L;
-	private JMenuBar barraMenu;
-	private JMenuItem menuSair;
-	private JPanel painelLogo;
-	private GridBagConstraints inserts;
-	private JLabel rotuloLogo, rotuloHelp;
 	private String usuario;
+	private JLabel rotuloGubga;
+	private JMenuBar barraMenu;
+	private JMenuItem menuSair, menuAlternarConta;
+	private JTable tabelaUsuarios;
+	private JTextField campoPesquisa;
+	private JPanel painelNorte, painelCentro, painelSul;
+	private JButton botaoConfiguracao;
+	private JPopupMenu popMenu;
 	
 	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
 		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
@@ -60,7 +67,7 @@ public class JanelaPrincipal extends Janela {
 		customizarElementos();
 		configurarEventos();
 		adicionarElementos();
-		definirPropriedades(janelaPai, "GUBGA - Gerenciador de Usuários Banidos do Garena", new Dimension(650, 600));
+		definirPropriedades(janelaPai, "GUBGA - Gerenciador de Usuários Banidos do Garena", new Dimension(550, 500));
 	}
 
 	@Override
@@ -69,15 +76,17 @@ public class JanelaPrincipal extends Janela {
 		new MenuBanList(this);
 		new MenuAjuda(this);
 		
+		popMenu.add(menuAlternarConta);  
+		popMenu.add(menuSair);
+		
 		barraMenu.add(menuSair);
 		setJMenuBar(barraMenu);
-		inserts.gridx = 0;
-		inserts.gridy = 0;
-		//painelLogo.add(rotuloLogo, inserts);
-		inserts.gridx = 0;
-		inserts.gridy = 1;
-		//painelLogo.add(rotuloHelp, inserts);
-		add(painelLogo);
+		
+		painelNorte.add(rotuloGubga);
+		painelNorte.add(campoPesquisa);
+		painelNorte.add(botaoConfiguracao);
+		
+		add(painelNorte, BorderLayout.NORTH);
 	}
 
 	@Override
@@ -98,12 +107,20 @@ public class JanelaPrincipal extends Janela {
 
 	@Override
 	protected void criarElementos() {
-		painelLogo = new JPanel(new GridBagLayout());
-		inserts = new GridBagConstraints();
-		//rotuloLogo = new JLabel(new ImageIcon(Janela.getResource("logo.png")));
-		//rotuloHelp = new JLabel(new ImageIcon(Janela.getResource("descricao.png")));
+		painelNorte = new JPanel();
+		painelCentro = new JPanel();
+		painelSul = new JPanel();
+		
+		popMenu = new JPopupMenu();
+		
 		barraMenu = new JMenuBar();
-		menuSair  = new JMenuItem("Sair");
+		menuSair = new JMenuItem("Sair");
+		menuAlternarConta = new JMenuItem("Alternar Conta");
+		
+		botaoConfiguracao = new JButton(new ImageIcon(getResource("configuracao.png")));
+		
+		rotuloGubga = new JLabel(new ImageIcon(getResource("logo100.png")));
+		campoPesquisa = new JTextField(35);
 	}
 
 	@Override
@@ -112,6 +129,14 @@ public class JanelaPrincipal extends Janela {
 		menuSair.setIcon(new ImageIcon(Janela.getResource("sair.png")));
 		menuSair.setFont(new Font("Arial", Font.BOLD, 12));
 		menuSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		campoPesquisa.setToolTipText("Descreva o uid do usuário.");
+		campoPesquisa.setPreferredSize(new Dimension(500, 29));
+		campoPesquisa.setDocument(new TamanhoMaximo(25));
+		
+		botaoConfiguracao.setBorder(null);
+		botaoConfiguracao.setText("OPCOES                ");
+		botaoConfiguracao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 	
 	/**
