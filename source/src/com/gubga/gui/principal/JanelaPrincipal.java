@@ -1,6 +1,9 @@
 package com.gubga.gui.principal;
 
+import static com.gubga.classes.Recursos.customizarBotao;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -22,17 +25,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.table.DefaultTableModel;
 
 import com.gubga.classes.TamanhoMaximo;
 import com.gubga.gui.Janela;
 import com.gubga.gui.ajuda.MenuAjuda;
-import com.gubga.gui.banlist.MenuBanList;
 import com.gubga.gui.principal.eventos.TratadorEventosJanelaPrincipal;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
@@ -50,15 +52,16 @@ public class JanelaPrincipal extends Janela {
 	private String usuario;
 	private JLabel rotuloGubga;
 	private JMenuBar barraMenu;
-	private JMenuItem menuSair, menuAlternarConta;
-	private JTable tabelaUsuarios;
-	private JTextField campoPesquisa;
-	private JPanel painelNorte, painelCentro, painelSul;
-	private JButton botaoConfiguracao;
 	private JPopupMenu popMenu;
+	private JTable tabelaUsuarios;
+	private JScrollPane scrollPane;
+	private JTextField campoPesquisa;
 	private long timeLastShown = 100;
+	private JButton botaoConfiguracao, botaoCarregar, botaoLimpar, botaoSair;;
+	private JMenuItem menuAlternarConta;
+	private JPanel painelNorte, painelCentro, painelSul;
 	private TratadorEventosJanelaPrincipal tratadorEventos = new TratadorEventosJanelaPrincipal(this);
-	
+
 	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
 		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
 		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
@@ -75,31 +78,41 @@ public class JanelaPrincipal extends Janela {
 		customizarElementos();
 		configurarEventos();
 		adicionarElementos();
-		definirPropriedades(janelaPai, "GUBGA - Gerenciador de Usuários Banidos do Garena", new Dimension(550, 500));
+		definirPropriedades(janelaPai, "GUBGA - Gerenciador de Usuários Banidos do Garena", new Dimension(470, 500));
 	}
 
 	@Override
 	protected void adicionarElementos() {
-		
-		new MenuBanList(this);
+
 		new MenuAjuda(this);
-		
+
 		popMenu.add(menuAlternarConta);  
-		popMenu.add(menuSair);
-		
-		barraMenu.add(menuSair);
+
 		setJMenuBar(barraMenu);
-		
+
 		painelNorte.add(rotuloGubga);
 		painelNorte.add(campoPesquisa);
 		painelNorte.add(botaoConfiguracao);
+
+		painelCentro.add(scrollPane);
 		
+		painelSul.add(botaoCarregar);
+		painelSul.add(botaoLimpar);
+		painelSul.add(botaoSair);
+
 		add(painelNorte, BorderLayout.NORTH);
+		add(painelCentro, BorderLayout.CENTER);
+		add(painelSul, BorderLayout.SOUTH);
 	}
 
 	@Override
 	protected void configurarEventos() {
-		
+
+		botaoSair.addActionListener(tratadorEventos);
+		botaoCarregar.addActionListener(tratadorEventos);
+		botaoLimpar.addActionListener(tratadorEventos);
+		tabelaUsuarios.addMouseListener(tratadorEventos);
+		menuAlternarConta.addActionListener(tratadorEventos);
 		botaoConfiguracao.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -109,13 +122,6 @@ public class JanelaPrincipal extends Janela {
 				}
 			}
 		});
-		menuAlternarConta.addActionListener(tratadorEventos);
-		menuSair.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				System.exit(0);
-			}
-		});
-		
 		addWindowListener( new WindowAdapter() {
 			public void windowClosing(WindowEvent evento) {
 				System.exit(0);
@@ -128,37 +134,69 @@ public class JanelaPrincipal extends Janela {
 		painelNorte = new JPanel();
 		painelCentro = new JPanel();
 		painelSul = new JPanel();
-		
+
 		popMenu = new JPopupMenu();
-		
+
 		barraMenu = new JMenuBar();
-		menuSair = new JMenuItem("Sair");
 		menuAlternarConta = new JMenuItem("Alternar Conta");
-		
+
 		botaoConfiguracao = new JButton(new ImageIcon(getResource("configuracao.png")));
-		
+		botaoCarregar = new JButton(new ImageIcon(getResource("popular.png")));
+		botaoSair = new JButton(new ImageIcon(getResource("sair2.png")));
+		botaoLimpar = new JButton(new ImageIcon(getResource("limpar.png")));
+
 		rotuloGubga = new JLabel(new ImageIcon(getResource("logo100.png")));
-		campoPesquisa = new JTextField(35);
+		campoPesquisa = new JTextField(25);
+
+		String colunasTabela[] = {"UserId", "UserName", "Reason"},
+		dadosTabela[][] = new String[0][0];
+
+		tabelaUsuarios = new JTable(new DefaultTableModel(dadosTabela, colunasTabela)){
+			private static final long serialVersionUID = 5727320816550514929L;
+			public boolean isCellEditable(int rowIndex, int colIndex) {
+				return false;
+			};
+		};
+
+		scrollPane = new JScrollPane(tabelaUsuarios);
+		Object[] linha = new Object[3];
+		linha[0] = "10661343";
+		linha[1] = "lGARROCHOl";
+		linha[2] = "Hacker";
+		DefaultTableModel modeloTabela = ((DefaultTableModel)(tabelaUsuarios.getModel()));
+		modeloTabela.addRow(linha);
 	}
 
 	@Override
 	protected void customizarElementos() {
-		menuSair.setMnemonic(KeyEvent.VK_F4);
-		menuSair.setIcon(new ImageIcon(Janela.getResource("sair.png")));
-		menuSair.setFont(new Font("Arial", Font.BOLD, 12));
-		menuSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
 		menuAlternarConta.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
-		campoPesquisa.setToolTipText("Descreva o uid do usuário.");
+
+		campoPesquisa.setToolTipText("Digite Aqui o Nick do Usuário.");
 		campoPesquisa.setPreferredSize(new Dimension(500, 29));
 		campoPesquisa.setDocument(new TamanhoMaximo(25));
-		
+
 		botaoConfiguracao.setBorder(null);
 		botaoConfiguracao.setText("OPCOES                ");
 		botaoConfiguracao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		customizarBotao(botaoCarregar);
+		customizarBotao(botaoSair);
+		customizarBotao(botaoLimpar);
+		
+		botaoCarregar.setText("Carregar");
+		botaoSair.setText("Sair    ");
+		botaoLimpar.setText("Limpar  ");
+		
+		botaoConfiguracao.setToolTipText("Alternar de Conta.");
+		botaoCarregar.setToolTipText("Carregar Contas Existentes da Pasta do Garena Plus.");
+		botaoSair.setToolTipText("Sair do GUBGA.");
+		botaoLimpar.setToolTipText("Limpar Tabela de Usuários do Garena Plus.");
+		tabelaUsuarios.setToolTipText("Dê um Duplo Clique na Conta a Ser Utilizada.");
+		
+		tabelaUsuarios.setForeground(new Color(0,185,242));
+		scrollPane.setPreferredSize(new Dimension(450, 330));
 	}
-	
+
 	/**
 	 * Retorna uma referencia da Barra de Menu.
 	 * 
@@ -167,13 +205,9 @@ public class JanelaPrincipal extends Janela {
 	public JMenuBar getBarraMenu() {
 		return barraMenu;
 	}
-	
+
 	public String getUsuario() {
 		return usuario;
-	}
-
-	public JMenuItem getMenuSair() {
-		return menuSair;
 	}
 
 	public JMenuItem getMenuAlternarConta() {
