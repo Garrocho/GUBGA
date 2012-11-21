@@ -1,9 +1,12 @@
 package com.gubga.gui.principal;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,11 +26,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import com.gubga.classes.TamanhoMaximo;
 import com.gubga.gui.Janela;
 import com.gubga.gui.ajuda.MenuAjuda;
 import com.gubga.gui.banlist.MenuBanList;
+import com.gubga.gui.principal.eventos.TratadorEventosJanelaPrincipal;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
@@ -50,6 +56,8 @@ public class JanelaPrincipal extends Janela {
 	private JPanel painelNorte, painelCentro, painelSul;
 	private JButton botaoConfiguracao;
 	private JPopupMenu popMenu;
+	private long timeLastShown = 100;
+	private TratadorEventosJanelaPrincipal tratadorEventos = new TratadorEventosJanelaPrincipal(this);
 	
 	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
 		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
@@ -92,6 +100,16 @@ public class JanelaPrincipal extends Janela {
 	@Override
 	protected void configurarEventos() {
 		
+		botaoConfiguracao.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if ((System.currentTimeMillis() - timeLastShown) > 300) {
+					Component c = (Component) e.getSource();
+					popMenu.show(c, 25, c.getHeight());
+				}
+			}
+		});
+		menuAlternarConta.addActionListener(tratadorEventos);
 		menuSair.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				System.exit(0);
@@ -130,6 +148,8 @@ public class JanelaPrincipal extends Janela {
 		menuSair.setFont(new Font("Arial", Font.BOLD, 12));
 		menuSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
+		menuAlternarConta.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
 		campoPesquisa.setToolTipText("Descreva o uid do usuário.");
 		campoPesquisa.setPreferredSize(new Dimension(500, 29));
 		campoPesquisa.setDocument(new TamanhoMaximo(25));
@@ -150,5 +170,29 @@ public class JanelaPrincipal extends Janela {
 	
 	public String getUsuario() {
 		return usuario;
+	}
+
+	public JMenuItem getMenuSair() {
+		return menuSair;
+	}
+
+	public JMenuItem getMenuAlternarConta() {
+		return menuAlternarConta;
+	}
+
+	public JTable getTabelaUsuarios() {
+		return tabelaUsuarios;
+	}
+
+	public JTextField getCampoPesquisa() {
+		return campoPesquisa;
+	}
+
+	public JButton getBotaoConfiguracao() {
+		return botaoConfiguracao;
+	}
+
+	public JPopupMenu getPopMenu() {
+		return popMenu;
 	}
 }
