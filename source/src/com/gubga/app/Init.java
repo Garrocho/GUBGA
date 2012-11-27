@@ -13,7 +13,7 @@ import com.gubga.persistencia.BancoDadosBanList;
  */
 public class Init {
 
-	static String path = "C:/Program Files/Garena Plus/Room/user/13569386/ban.dat";
+	static String path = "C:/Program Files/Garena Plus/Room/user/70290658/ban.dat";
 
 	public static void main(String[] args) throws SQLException {
 		BancoDadosBanList dbBanList = new BancoDadosBanList(path);
@@ -26,7 +26,7 @@ public class Init {
 		}
 		System.out.println("[DATABASE BAN LIST] Calculando o Tamanho do Banco.");
 		System.out.println("[DATABASE BAN LIST] Quatidade de Usuarios: " + dbBanList.qtdeTotalBan());
-		//dbBanList.addUsuario(6666777, "GUSTAVO", "MAPA HACK.");
+		//dbBanList.addUsuario(8778879, "GARROCHO", "FLOOD.");
 		ArrayList<Usuario> usuarios = dbBanList.getTodosUsuarios();
 		for (Usuario user : usuarios) {
 			System.out.println(user.toString());

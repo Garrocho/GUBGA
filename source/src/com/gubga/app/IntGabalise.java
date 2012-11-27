@@ -5,7 +5,6 @@ import java.text.ParseException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.gubga.gui.carregamento.JanelaCarregamento;
 import com.gubga.gui.principal.JanelaPrincipal;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
@@ -23,6 +22,6 @@ public class IntGabalise {
 		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
 		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
 		//new JanelaCarregamento(null);
-		new JanelaPrincipal(null, "10661343");
+		//new JanelaPrincipal(null, "10661343");
 	}
 }
