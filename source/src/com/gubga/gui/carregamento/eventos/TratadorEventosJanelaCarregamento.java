@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 
 import com.gubga.gui.Janela;
 import com.gubga.gui.carregamento.JanelaCarregamento;
-import com.gubga.gui.principal.JanelaPrincipal;
 
 public class TratadorEventosJanelaCarregamento extends MouseAdapter implements ActionListener {
 
@@ -37,7 +36,7 @@ public class TratadorEventosJanelaCarregamento extends MouseAdapter implements A
 		
 		// Caso o evento tenha ocorrido no botao Sair.
 		else if (evento.getSource() == janelaCarregamento.getBotaoSair()) {
-			System.exit(0);
+			janelaCarregamento.dispose();
 		}
 		
 		// Caso o evento tenha ocorrido no botao Limpar.
@@ -79,7 +78,7 @@ public class TratadorEventosJanelaCarregamento extends MouseAdapter implements A
 		if (evento.getClickCount() == 2 && evento.getSource() == janelaCarregamento.getTabelaUsuarios()) {
 			int selecionado = janelaCarregamento.getTabelaUsuarios().getSelectedRow();
 			String usuario = janelaCarregamento.getTabelaUsuarios().getValueAt(selecionado, 0).toString();
-			new JanelaPrincipal(janelaCarregamento, usuario);
+			//new JanelaPrincipal(janelaCarregamento, usuario);
 		}
 	}
 }

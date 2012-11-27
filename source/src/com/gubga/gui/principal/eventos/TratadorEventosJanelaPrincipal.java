@@ -6,10 +6,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
+import com.gubga.classes.Usuario;
+import com.gubga.gui.carregamento.JanelaCarregamento;
 import com.gubga.gui.principal.JanelaPrincipal;
+import com.gubga.persistencia.BancoDadosBanList;
 
 public class TratadorEventosJanelaPrincipal extends MouseAdapter implements ActionListener, KeyListener {
 
@@ -24,43 +28,58 @@ public class TratadorEventosJanelaPrincipal extends MouseAdapter implements Acti
 
 	public void actionPerformed(ActionEvent evento) {
 
-		//1modeloTabela = ((DefaultTableModel)(janelaPrincipal.getTabelaUsuarios().getModel()));
-		//modeloTabela.setNumRows(0);
+		// Caso o evento tenha ocorrido no botao Sair.
+		if (evento.getSource() == janelaPrincipal.getBotaoSair()) {
+			System.exit(0);
+		}
+		
+		// Caso o evento tenha ocorrido no botao Configurações.
+		else if (evento.getSource() == janelaPrincipal.getMenuAlternarConta()) {
+				new JanelaCarregamento(janelaPrincipal);
+			}
+
+		// Caso o evento tenha ocorrido no botao Limpar.
+		else if (evento.getSource() == janelaPrincipal.getBotaoLimpar()) {
+
+			modeloTabela = ((DefaultTableModel)(janelaPrincipal.getTabelaUsuarios().getModel()));
+			modeloTabela.setNumRows(0);
+		}
+
+		// Caso o evento tenha ocorrido no botao Carregar.
+		else if (evento.getSource() == janelaPrincipal.getBotaoCarregar()) {
+			pesquisarUsuarios();
+		}
 	}
 
-	/*private void pesquisarUsuarios() {
-		String diretorio = janelaPrincipal.getCampoTextoDiretorio().getText();
-		if (diretorio.equalsIgnoreCase("Diretório do Garena Plus."))
-			JOptionPane.showMessageDialog(janelaPrincipal, "O Diretório do Garena Não Foi Selecionado.", "Erro ao Abrir Diretório", JOptionPane.ERROR_MESSAGE);
-		else {
-			File d2 = new File(diretorio + "/room/user/");
-			if (!d2.exists())
-				JOptionPane.showMessageDialog(janelaPrincipal, "O Diretório Selecionado Não é Um Diretório do Garena Plus.", "Erro de Diretório Inválido", JOptionPane.ERROR_MESSAGE);
-			else {
-				String userIds[] = d2.list();
-				System.out.println(d2.getAbsolutePath());
-				modeloTabela = ((DefaultTableModel)(janelaPrincipal.getTabelaUsuarios().getModel()));
-				modeloTabela.setNumRows(0);
-				Object[] linha = new Object[1];
-				for (String user : userIds) {
-					linha[0] = user;
-					modeloTabela.addRow(linha);
-				}
+	private void pesquisarUsuarios() {
+		String texto = janelaPrincipal.getCampoPesquisa().getText();
+
+		// Obtem a referencia da tabela de usuários. Seta a numero de linhas data tabela usuários com 0.
+		modeloTabela = ((DefaultTableModel)(janelaPrincipal.getTabelaUsuarios().getModel()));
+		modeloTabela.setNumRows(0);
+
+		// Adiciona a variavel "%" para pesquisar todos os nomes a partir das letras ja inseridas.
+		if (texto.length() > 0) {
+			texto += "%";
+			BancoDadosBanList bdBanList = new BancoDadosBanList(janelaPrincipal.getEndereco());
+			ArrayList<Usuario> usuarios = bdBanList.getUsuario(texto);
+			for (Usuario user : usuarios) {
+				Object[] linha = new Object[3];
+				linha[0] = user.getUserId();
+				linha[1] = user.getUserName();
+				linha[2] = user.getReason();
+				modeloTabela.addRow(linha);
 			}
 		}
-	}*/
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent evento) {
-		if (evento.getSource() == janelaPrincipal.getTabelaUsuarios()) {
-			int selecionado = janelaPrincipal.getTabelaUsuarios().getSelectedRow();
-			String usuario = janelaPrincipal.getTabelaUsuarios().getValueAt(selecionado, 0).toString();
-			new JanelaPrincipal(janelaPrincipal, usuario);
-		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
+		pesquisarUsuarios();
 	}
 
 	@Override
