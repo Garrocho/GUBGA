@@ -6,7 +6,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,7 +40,7 @@ public class JanelaCarregamento extends Janela {
 		customizarElementos();
 		configurarEventos();
 		adicionarElementos();
-		definirPropriedades(janelaPai, "GUBGA - Carregamento de Usuários", null);
+		definirPropriedades(janelaPai, "GUBGA - Carregamento de Usuários", new Dimension(330, 400));
 	}
 
 	@Override
@@ -50,10 +56,15 @@ public class JanelaCarregamento extends Janela {
 		painelSul.add(botaoCarregar);
 		painelSul.add(botaoLimpar);
 		painelSul.add(botaoSair);
+		
+		JPanel bgPanel = new Painel(new ImageIcon(getResource("teste.jpeg")));
+        bgPanel.setLayout(new BorderLayout());
 
-		add(painelNorte, BorderLayout.NORTH);
-		add(painelCentro, BorderLayout.CENTER);
-		add(painelSul, BorderLayout.SOUTH);
+        bgPanel.add(painelNorte, BorderLayout.NORTH);
+        bgPanel.add(painelCentro, BorderLayout.CENTER);
+        bgPanel.add(painelSul, BorderLayout.SOUTH);
+        
+        setContentPane(bgPanel);
 	}
 
 	@Override
@@ -64,6 +75,11 @@ public class JanelaCarregamento extends Janela {
 		botaoCarregar.addActionListener(tratadorEventos);
 		botaoLimpar.addActionListener(tratadorEventos);
 		tabelaUsuarios.addMouseListener(tratadorEventos);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent arg0) {
+				getThis().dispose();
+			}
+		});
 	}
 
 	@Override
@@ -72,6 +88,16 @@ public class JanelaCarregamento extends Janela {
 		painelCentro = new JPanel();
 		painelSul = new JPanel();
 		painelDiretorio = new JPanel();
+		
+		painelNorte.setOpaque(false);
+		painelCentro.setOpaque(false);
+		painelSul.setOpaque(false);
+		painelDiretorio.setOpaque(false);
+		
+		painelNorte.setLayout(new FlowLayout());
+		painelCentro.setLayout(new FlowLayout());
+		painelSul.setLayout(new FlowLayout());
+		painelDiretorio.setLayout(new FlowLayout());
 		
 		campoTextoDiretorio = new JTextField(29);
 		
@@ -102,13 +128,19 @@ public class JanelaCarregamento extends Janela {
 		
 		campoTextoDiretorio.setText("Diretório do Garena Plus.");
 		
-		campoTextoDiretorio.setPreferredSize(new Dimension(110, 30));
+		campoTextoDiretorio.setPreferredSize(new Dimension(110, 28));
 		campoTextoDiretorio.setEditable(false);
 
 		tabelaUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		tabelaUsuarios.setForeground(new Color(0,185,242));
+		
+		tabelaUsuarios.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		tabelaUsuarios.setSelectionBackground(Color.BLACK);
+		tabelaUsuarios.setSelectionForeground(Color.RED);
+		tabelaUsuarios.setFocusable(false);
 		
 		scrollPane.setPreferredSize(new Dimension(310, 200));
+		scrollPane.setBackground(new Color(0,0,0,0));
+		scrollPane.setFocusable(false);
 		
 		customizarBotao(botaoCarregar);
 		customizarBotao(botaoSair);
@@ -153,4 +185,18 @@ public class JanelaCarregamento extends Janela {
 	public JButton getBotaoDiretorio() {
 		return botaoDiretorio;
 	}
+}
+
+class Painel extends JPanel {
+	private static final long serialVersionUID = 1L;
+	private Image bg;
+	
+	public Painel(ImageIcon imagem) {
+		this.bg = imagem.getImage();
+	}
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+    }
 }

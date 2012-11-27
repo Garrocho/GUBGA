@@ -7,16 +7,16 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -49,7 +49,7 @@ import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 public class JanelaPrincipal extends Janela {
 
 	private static final long serialVersionUID = 1L;
-	private String usuario;
+	private String usuario, endereco;
 	private JLabel rotuloGubga;
 	private JMenuBar barraMenu;
 	private JPopupMenu popMenu;
@@ -60,25 +60,25 @@ public class JanelaPrincipal extends Janela {
 	private JButton botaoConfiguracao, botaoCarregar, botaoLimpar, botaoSair;;
 	private JMenuItem menuAlternarConta;
 	private JPanel painelNorte, painelCentro, painelSul;
-	private TratadorEventosJanelaPrincipal tratadorEventos = new TratadorEventosJanelaPrincipal(this);
 
 	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
 		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
 		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
-		new JanelaPrincipal(null, "10661343");
+		new JanelaPrincipal(null, "10661343", "C:/Program Files/Garena Plus/Room/user/70290658/ban.dat");
 	}
 
 	/**
 	 * Este e o construtor. Ele cria os menus e adiciona a janela a barra de menus contendo os modulos do sistema.
 	 */
-	public JanelaPrincipal(JFrame janelaPai, String usuario) {
+	public JanelaPrincipal(JFrame janelaPai, String usuario, String endereco) {
 		super();
 		this.usuario = usuario;
+		this.endereco = endereco;
 		criarElementos();
 		customizarElementos();
 		configurarEventos();
 		adicionarElementos();
-		definirPropriedades(janelaPai, "GUBGA - Gerenciador de Usuários Banidos do Garena", new Dimension(470, 500));
+		definirPropriedades(janelaPai, "GUBGA - Gerenciador de Usuários Banidos do Garena", null);
 	}
 
 	@Override
@@ -100,14 +100,20 @@ public class JanelaPrincipal extends Janela {
 		painelSul.add(botaoLimpar);
 		painelSul.add(botaoSair);
 
-		add(painelNorte, BorderLayout.NORTH);
-		add(painelCentro, BorderLayout.CENTER);
-		add(painelSul, BorderLayout.SOUTH);
+		JPanel bgPanel = new Painel(new ImageIcon(getResource("gg4.png")));
+        bgPanel.setLayout(new BorderLayout());
+
+        bgPanel.add(painelNorte, BorderLayout.NORTH);
+        bgPanel.add(painelCentro, BorderLayout.CENTER);
+        bgPanel.add(painelSul, BorderLayout.SOUTH);
+        
+        setContentPane(bgPanel);
 	}
 
 	@Override
 	protected void configurarEventos() {
-
+		TratadorEventosJanelaPrincipal tratadorEventos = new TratadorEventosJanelaPrincipal(this);
+		campoPesquisa.addKeyListener(tratadorEventos);
 		botaoSair.addActionListener(tratadorEventos);
 		botaoCarregar.addActionListener(tratadorEventos);
 		botaoLimpar.addActionListener(tratadorEventos);
@@ -134,12 +140,20 @@ public class JanelaPrincipal extends Janela {
 		painelNorte = new JPanel();
 		painelCentro = new JPanel();
 		painelSul = new JPanel();
+		
+		painelNorte.setOpaque(false);
+		painelCentro.setOpaque(false);
+		painelSul.setOpaque(false);
+		
+		painelNorte.setLayout(new FlowLayout());
+		painelCentro.setLayout(new FlowLayout());
+		painelSul.setLayout(new FlowLayout());
 
 		popMenu = new JPopupMenu();
 
 		barraMenu = new JMenuBar();
 		menuAlternarConta = new JMenuItem("Alternar Conta");
-
+		
 		botaoConfiguracao = new JButton(new ImageIcon(getResource("configuracao.png")));
 		botaoCarregar = new JButton(new ImageIcon(getResource("popular.png")));
 		botaoSair = new JButton(new ImageIcon(getResource("sair2.png")));
@@ -159,12 +173,6 @@ public class JanelaPrincipal extends Janela {
 		};
 
 		scrollPane = new JScrollPane(tabelaUsuarios);
-		Object[] linha = new Object[3];
-		linha[0] = "10661343";
-		linha[1] = "lGARROCHOl";
-		linha[2] = "Hacker";
-		DefaultTableModel modeloTabela = ((DefaultTableModel)(tabelaUsuarios.getModel()));
-		modeloTabela.addRow(linha);
 	}
 
 	@Override
@@ -193,8 +201,15 @@ public class JanelaPrincipal extends Janela {
 		botaoLimpar.setToolTipText("Limpar Tabela de Usuários do Garena Plus.");
 		tabelaUsuarios.setToolTipText("Dê um Duplo Clique na Conta a Ser Utilizada.");
 		
-		tabelaUsuarios.setForeground(new Color(0,185,242));
-		scrollPane.setPreferredSize(new Dimension(450, 330));
+		tabelaUsuarios.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		tabelaUsuarios.setSelectionBackground(Color.BLACK);
+		tabelaUsuarios.setSelectionForeground(Color.RED);
+		tabelaUsuarios.setFocusable(false);
+		tabelaUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		scrollPane.setPreferredSize(new Dimension(450, 300));
+		scrollPane.setBackground(new Color(0,0,0,0));
+		scrollPane.setFocusable(false);
 	}
 
 	/**
@@ -229,4 +244,38 @@ public class JanelaPrincipal extends Janela {
 	public JPopupMenu getPopMenu() {
 		return popMenu;
 	}
+
+	public JButton getBotaoCarregar() {
+		return botaoCarregar;
+	}
+
+	public JButton getBotaoLimpar() {
+		return botaoLimpar;
+	}
+
+	public JButton getBotaoSair() {
+		return botaoSair;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+}
+
+class Painel extends JPanel {
+	private static final long serialVersionUID = 1L;
+	private Image bg;
+	
+	public Painel(ImageIcon imagem) {
+		this.bg = imagem.getImage();
+	}
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+    }
 }

@@ -3,8 +3,6 @@ package com.gubga.gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URL;
 
@@ -30,11 +28,6 @@ public abstract class Janela extends JFrame {
 	protected abstract void configurarEventos();
 
 	public void definirPropriedades(JFrame janelaPai, String titulo, Dimension dimensao) {
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent arg0) {
-				System.exit(0);
-			}
-		});
 		setTitle(titulo);
 		if (dimensao == null)
 			pack();
@@ -42,8 +35,6 @@ public abstract class Janela extends JFrame {
 			setSize(dimensao);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getResource("garena_logo.png")));
 		setLocationRelativeTo(janelaPai);
-		if (janelaPai != null)
-			janelaPai.dispose();
 		setResizable(false);
 		setVisible(true);
 	}
