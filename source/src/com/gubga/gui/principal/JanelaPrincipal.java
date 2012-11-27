@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import com.gubga.classes.TamanhoMaximo;
 import com.gubga.gui.Janela;
@@ -95,19 +97,19 @@ public class JanelaPrincipal extends Janela {
 		painelNorte.add(botaoConfiguracao);
 
 		painelCentro.add(scrollPane);
-		
+
 		painelSul.add(botaoCarregar);
 		painelSul.add(botaoLimpar);
 		painelSul.add(botaoSair);
 
 		JPanel bgPanel = new Painel(new ImageIcon(getResource("gg4.png")));
-        bgPanel.setLayout(new BorderLayout());
+		bgPanel.setLayout(new BorderLayout());
 
-        bgPanel.add(painelNorte, BorderLayout.NORTH);
-        bgPanel.add(painelCentro, BorderLayout.CENTER);
-        bgPanel.add(painelSul, BorderLayout.SOUTH);
-        
-        setContentPane(bgPanel);
+		bgPanel.add(painelNorte, BorderLayout.NORTH);
+		bgPanel.add(painelCentro, BorderLayout.CENTER);
+		bgPanel.add(painelSul, BorderLayout.SOUTH);
+
+		setContentPane(bgPanel);
 	}
 
 	@Override
@@ -140,11 +142,11 @@ public class JanelaPrincipal extends Janela {
 		painelNorte = new JPanel();
 		painelCentro = new JPanel();
 		painelSul = new JPanel();
-		
+
 		painelNorte.setOpaque(false);
 		painelCentro.setOpaque(false);
 		painelSul.setOpaque(false);
-		
+
 		painelNorte.setLayout(new FlowLayout());
 		painelCentro.setLayout(new FlowLayout());
 		painelSul.setLayout(new FlowLayout());
@@ -153,7 +155,7 @@ public class JanelaPrincipal extends Janela {
 
 		barraMenu = new JMenuBar();
 		menuAlternarConta = new JMenuItem("Alternar Conta");
-		
+
 		botaoConfiguracao = new JButton(new ImageIcon(getResource("configuracao.png")));
 		botaoCarregar = new JButton(new ImageIcon(getResource("popular.png")));
 		botaoSair = new JButton(new ImageIcon(getResource("sair2.png")));
@@ -186,30 +188,44 @@ public class JanelaPrincipal extends Janela {
 		botaoConfiguracao.setBorder(null);
 		botaoConfiguracao.setText("OPCOES                ");
 		botaoConfiguracao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		customizarBotao(botaoCarregar);
 		customizarBotao(botaoSair);
 		customizarBotao(botaoLimpar);
-		
+
 		botaoCarregar.setText("Carregar");
 		botaoSair.setText("Sair    ");
 		botaoLimpar.setText("Limpar  ");
-		
+
 		botaoConfiguracao.setToolTipText("Alternar de Conta.");
 		botaoCarregar.setToolTipText("Carregar Contas Existentes da Pasta do Garena Plus.");
 		botaoSair.setToolTipText("Sair do GUBGA.");
 		botaoLimpar.setToolTipText("Limpar Tabela de Usuários do Garena Plus.");
 		tabelaUsuarios.setToolTipText("Dê um Duplo Clique na Conta a Ser Utilizada.");
-		
+
 		tabelaUsuarios.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		tabelaUsuarios.setSelectionBackground(Color.BLACK);
 		tabelaUsuarios.setSelectionForeground(Color.RED);
 		tabelaUsuarios.setFocusable(false);
 		tabelaUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
+		// "UserId", "UserName", "Reason"}
+		tabelaUsuarios.getColumn("UserId").setPreferredWidth(8);
+		tabelaUsuarios.getColumn("UserName").setPreferredWidth(25);
+		tabelaUsuarios.getColumn("Reason").setPreferredWidth(150);
+
 		scrollPane.setPreferredSize(new Dimension(450, 300));
 		scrollPane.setBackground(new Color(0,0,0,0));
 		scrollPane.setFocusable(false);
+
+		tabelaUsuarios.setDragEnabled(false);
+		tabelaUsuarios.getTableHeader().setReorderingAllowed(false);
+		tabelaUsuarios.setFont(new Font("Tahoma",Font.PLAIN,12));
+
+		JTableHeader header = tabelaUsuarios.getTableHeader();
+		header.setResizingAllowed(false);
+		header.setForeground(Color.WHITE);
+		header.setFont(new Font("Tahoma",Font.PLAIN,12));
 	}
 
 	/**
@@ -269,13 +285,13 @@ public class JanelaPrincipal extends Janela {
 class Painel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Image bg;
-	
+
 	public Painel(ImageIcon imagem) {
 		this.bg = imagem.getImage();
 	}
-    
-    @Override
-    public void paintComponent(Graphics g) {
-        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
-    }
+
+	@Override
+	public void paintComponent(Graphics g) {
+		g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+	}
 }

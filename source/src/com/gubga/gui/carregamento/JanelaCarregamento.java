@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
@@ -21,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import com.gubga.gui.Janela;
 import com.gubga.gui.carregamento.eventos.TratadorEventosJanelaCarregamento;
@@ -141,6 +143,15 @@ public class JanelaCarregamento extends Janela {
 		scrollPane.setPreferredSize(new Dimension(310, 200));
 		scrollPane.setBackground(new Color(0,0,0,0));
 		scrollPane.setFocusable(false);
+		
+		tabelaUsuarios.setDragEnabled(false);
+		tabelaUsuarios.getTableHeader().setReorderingAllowed(false);
+		tabelaUsuarios.setFont(new Font("Tahoma",Font.PLAIN,12));
+
+		JTableHeader header = tabelaUsuarios.getTableHeader();
+		header.setResizingAllowed(false);
+		header.setForeground(Color.WHITE);
+		header.setFont(new Font("Tahoma",Font.PLAIN,12));
 		
 		customizarBotao(botaoCarregar);
 		customizarBotao(botaoSair);
