@@ -72,6 +72,32 @@ public class BancoDadosBanList extends BancoDados {
 			return null;
 		}
 	}	
+	
+	/**
+	 * Busca Um Determinado Nome de Usuario Banido.
+	 * 
+	 * @return um <code>ResultSet</code> com o resultado da pesquisa.
+	 */
+	public ArrayList<Usuario> getUsuario(String nome) {
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+		try {
+			iniciaConexao();
+			SQL = "SELECT UserId, UserName, Reason FROM Banlist WHERE Banlist.UserName LIKE \'" + nome + "\'";
+			resultado = executaComando(SQL);
+			while (resultado.next()) {
+				Usuario usuario = new Usuario();
+				usuario.setUserId(resultado.getInt("UserId"));
+				usuario.setUserName(resultado.getString("UserName"));
+				usuario.setReason(resultado.getString("Reason"));
+				usuarios.add(usuario);
+			}
+			fechaConexao();
+			return usuarios;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}	
 
 	/**
 	 * Adiciona um novo usuarios com os dados passados como argumento.
