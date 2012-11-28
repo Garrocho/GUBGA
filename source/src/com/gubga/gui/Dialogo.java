@@ -1,11 +1,15 @@
 package com.gubga.gui;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 public abstract class Dialogo extends JDialog {
@@ -31,6 +35,7 @@ public abstract class Dialogo extends JDialog {
 			pack();
 		else
 			setSize(dimensao);
+		setUndecorated(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getResource("garena_logo.png")));
 		setLocationRelativeTo(janelaPai);
 		setResizable(false);
@@ -43,6 +48,20 @@ public abstract class Dialogo extends JDialog {
 	 */
 	public static URL getResource(String enderecoArquivo){
 		return Janela.class.getResource("/icones/" + enderecoArquivo);
+	}
+	
+	public class Painel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		private Image bg;
+		
+		public Painel(ImageIcon imagem) {
+			this.bg = imagem.getImage();
+		}
+	    
+	    @Override
+	    public void paintComponent(Graphics g) {
+	        g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+	    }
 	}
 	
 }

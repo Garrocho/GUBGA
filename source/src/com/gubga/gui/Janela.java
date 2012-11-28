@@ -2,12 +2,16 @@ package com.gubga.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -152,5 +156,20 @@ public abstract class Janela extends JFrame {
 		String nomeArquivo = arquivo.getPath();
 
 		return nomeArquivo;
+	}
+	
+	public class Painel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		private Image bg;
+
+		public Painel(ImageIcon imagem) {
+			super();
+			this.bg = imagem.getImage();
+		}
+
+		@Override
+		public void paintComponent(Graphics g) {
+			g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+		}
 	}
 }
