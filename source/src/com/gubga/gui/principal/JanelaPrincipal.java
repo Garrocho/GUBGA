@@ -2,6 +2,7 @@ package com.gubga.gui.principal;
 
 import static com.gubga.classes.Recursos.customizarBotao;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -10,19 +11,23 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Ellipse2D;
 import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -35,9 +40,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import com.gubga.classes.TamanhoMaximo;
+import com.gubga.gui.EventoMoverJanelaPeloPainel;
 import com.gubga.gui.Janela;
-import com.gubga.gui.ajuda.MenuAjuda;
 import com.gubga.gui.principal.eventos.TratadorEventosJanelaPrincipal;
+import com.sun.awt.AWTUtilities;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
@@ -52,16 +58,14 @@ public class JanelaPrincipal extends Janela {
 
 	private static final long serialVersionUID = 1L;
 	private String usuario, endereco;
-	private JLabel rotuloGubga;
-	private JMenuBar barraMenu;
 	private JPopupMenu popMenu;
 	private JTable tabelaUsuarios;
 	private JScrollPane scrollPane;
 	private JTextField campoPesquisa;
 	private long timeLastShown = 100;
-	private JButton botaoConfiguracao, botaoCarregar, botaoLimpar, botaoSair;;
-	private JMenuItem menuAlternarConta;
-	private JPanel painelNorte, painelCentro, painelSul;
+	private JButton botaoConfiguracao, botaoCarregar, botaoLimpar;
+	private JMenuItem menuAlternarConta, menuSair;
+	private JPanel painelNorte, painelCentro, painelSul, bgPanel;
 
 	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
 		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
@@ -80,19 +84,21 @@ public class JanelaPrincipal extends Janela {
 		customizarElementos();
 		configurarEventos();
 		adicionarElementos();
+		setUndecorated(true);
+
 		definirPropriedades(janelaPai, "GUBGA - Gerenciador de Usuários Banidos do Garena", null);
+	}
+
+	public Janela getThis() {
+		return this;
 	}
 
 	@Override
 	protected void adicionarElementos() {
 
-		new MenuAjuda(this);
+		popMenu.add(menuAlternarConta);
+		popMenu.add(menuSair);
 
-		popMenu.add(menuAlternarConta);  
-
-		setJMenuBar(barraMenu);
-
-		painelNorte.add(rotuloGubga);
 		painelNorte.add(campoPesquisa);
 		painelNorte.add(botaoConfiguracao);
 
@@ -100,14 +106,15 @@ public class JanelaPrincipal extends Janela {
 
 		painelSul.add(botaoCarregar);
 		painelSul.add(botaoLimpar);
-		painelSul.add(botaoSair);
 
-		JPanel bgPanel = new Painel(new ImageIcon(getResource("gg4.png")));
+		bgPanel = new Painel(new ImageIcon(getResource("teste3.png")));
 		bgPanel.setLayout(new BorderLayout());
 
 		bgPanel.add(painelNorte, BorderLayout.NORTH);
 		bgPanel.add(painelCentro, BorderLayout.CENTER);
 		bgPanel.add(painelSul, BorderLayout.SOUTH);
+
+		bgPanel.setOpaque(false);
 
 		setContentPane(bgPanel);
 	}
@@ -115,8 +122,12 @@ public class JanelaPrincipal extends Janela {
 	@Override
 	protected void configurarEventos() {
 		TratadorEventosJanelaPrincipal tratadorEventos = new TratadorEventosJanelaPrincipal(this);
+
+		EventoMoverJanelaPeloPainel a = new EventoMoverJanelaPeloPainel(painelNorte);
+		this.addMouseListener(a);
+		this.addMouseMotionListener(a);
 		campoPesquisa.addKeyListener(tratadorEventos);
-		botaoSair.addActionListener(tratadorEventos);
+		menuSair.addActionListener(tratadorEventos);
 		botaoCarregar.addActionListener(tratadorEventos);
 		botaoLimpar.addActionListener(tratadorEventos);
 		tabelaUsuarios.addMouseListener(tratadorEventos);
@@ -153,16 +164,14 @@ public class JanelaPrincipal extends Janela {
 
 		popMenu = new JPopupMenu();
 
-		barraMenu = new JMenuBar();
-		menuAlternarConta = new JMenuItem("Alternar Conta");
+		menuAlternarConta = new JMenuItem("Trocar", new ImageIcon(getResource("alternar.png")));
+		menuSair = new JMenuItem("Sair", new ImageIcon(getResource("sair.png")));
 
 		botaoConfiguracao = new JButton(new ImageIcon(getResource("configuracao.png")));
 		botaoCarregar = new JButton(new ImageIcon(getResource("popular.png")));
-		botaoSair = new JButton(new ImageIcon(getResource("sair2.png")));
 		botaoLimpar = new JButton(new ImageIcon(getResource("limpar.png")));
 
-		rotuloGubga = new JLabel(new ImageIcon(getResource("logo100.png")));
-		campoPesquisa = new JTextField(25);
+		campoPesquisa = new JTextField(21);
 
 		String colunasTabela[] = {"UserId", "UserName", "Reason"},
 		dadosTabela[][] = new String[0][0];
@@ -180,6 +189,7 @@ public class JanelaPrincipal extends Janela {
 	@Override
 	protected void customizarElementos() {
 		menuAlternarConta.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		menuSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		campoPesquisa.setToolTipText("Digite Aqui o Nick do Usuário.");
 		campoPesquisa.setPreferredSize(new Dimension(500, 29));
@@ -190,16 +200,14 @@ public class JanelaPrincipal extends Janela {
 		botaoConfiguracao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		customizarBotao(botaoCarregar);
-		customizarBotao(botaoSair);
 		customizarBotao(botaoLimpar);
 
 		botaoCarregar.setText("Carregar");
-		botaoSair.setText("Sair    ");
-		botaoLimpar.setText("Limpar  ");
+		botaoLimpar.setText("Limpar");
 
-		botaoConfiguracao.setToolTipText("Alternar de Conta.");
 		botaoCarregar.setToolTipText("Carregar Contas Existentes da Pasta do Garena Plus.");
-		botaoSair.setToolTipText("Sair do GUBGA.");
+		menuSair.setToolTipText("Sair do GUBGA.");
+		menuAlternarConta.setToolTipText("Trocar a Conta Atual por Outra.");
 		botaoLimpar.setToolTipText("Limpar Tabela de Usuários do Garena Plus.");
 		tabelaUsuarios.setToolTipText("Dê um Duplo Clique na Conta a Ser Utilizada.");
 
@@ -209,32 +217,25 @@ public class JanelaPrincipal extends Janela {
 		tabelaUsuarios.setFocusable(false);
 		tabelaUsuarios.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		// "UserId", "UserName", "Reason"}
-		tabelaUsuarios.getColumn("UserId").setPreferredWidth(8);
-		tabelaUsuarios.getColumn("UserName").setPreferredWidth(25);
-		tabelaUsuarios.getColumn("Reason").setPreferredWidth(150);
+		tabelaUsuarios.getColumn("UserId").setPreferredWidth(10);
+		tabelaUsuarios.getColumn("UserName").setPreferredWidth(40);
+		tabelaUsuarios.getColumn("Reason").setPreferredWidth(60);
 
-		scrollPane.setPreferredSize(new Dimension(450, 300));
+		scrollPane.setPreferredSize(new Dimension(315, 300));
 		scrollPane.setBackground(new Color(0,0,0,0));
 		scrollPane.setFocusable(false);
 
 		tabelaUsuarios.setDragEnabled(false);
 		tabelaUsuarios.getTableHeader().setReorderingAllowed(false);
-		tabelaUsuarios.setFont(new Font("Tahoma",Font.PLAIN,12));
 
 		JTableHeader header = tabelaUsuarios.getTableHeader();
 		header.setResizingAllowed(false);
 		header.setForeground(Color.WHITE);
-		header.setFont(new Font("Tahoma",Font.PLAIN,12));
+		header.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	}
 
-	/**
-	 * Retorna uma referencia da Barra de Menu.
-	 * 
-	 * @return um <code>JMenuBar</code> com a Barra de Menu.
-	 */
-	public JMenuBar getBarraMenu() {
-		return barraMenu;
+	public JMenuItem getMenuSair() {
+		return menuSair;
 	}
 
 	public String getUsuario() {
@@ -269,10 +270,6 @@ public class JanelaPrincipal extends Janela {
 		return botaoLimpar;
 	}
 
-	public JButton getBotaoSair() {
-		return botaoSair;
-	}
-
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
@@ -287,7 +284,9 @@ class Painel extends JPanel {
 	private Image bg;
 
 	public Painel(ImageIcon imagem) {
+		super();
 		this.bg = imagem.getImage();
+		this.setBorder(BorderFactory.createTitledBorder(null, " Gerenciador de Usuários Banidos do Garena", 1, 0, new Font("Tahoma", Font.PLAIN, 16), Color.WHITE));
 	}
 
 	@Override
