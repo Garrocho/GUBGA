@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import com.gubga.classes.Usuario;
-import com.gubga.gui.carregamento.JanelaCarregamento;
+import com.gubga.gui.carregamento.DialogoAlternarConta;
 import com.gubga.gui.principal.JanelaPrincipal;
 import com.gubga.persistencia.BancoDadosBanList;
 
@@ -35,7 +35,7 @@ public class TratadorEventosJanelaPrincipal extends MouseAdapter implements Acti
 		
 		// Caso o evento tenha ocorrido no botao Configurações.
 		else if (evento.getSource() == janelaPrincipal.getMenuAlternarConta()) {
-				new JanelaCarregamento(janelaPrincipal);
+				new DialogoAlternarConta(janelaPrincipal);
 			}
 
 		// Caso o evento tenha ocorrido no botao Limpar.
@@ -43,11 +43,6 @@ public class TratadorEventosJanelaPrincipal extends MouseAdapter implements Acti
 
 			modeloTabela = ((DefaultTableModel)(janelaPrincipal.getTabelaUsuarios().getModel()));
 			modeloTabela.setNumRows(0);
-		}
-
-		// Caso o evento tenha ocorrido no botao Carregar.
-		else if (evento.getSource() == janelaPrincipal.getBotaoCarregar()) {
-			pesquisarUsuarios();
 		}
 	}
 
@@ -61,7 +56,7 @@ public class TratadorEventosJanelaPrincipal extends MouseAdapter implements Acti
 		// Adiciona a variavel "%" para pesquisar todos os nomes a partir das letras ja inseridas.
 		if (texto.length() > 0) {
 			texto += "%";
-			BancoDadosBanList bdBanList = new BancoDadosBanList(janelaPrincipal.getEndereco());
+			BancoDadosBanList bdBanList = new BancoDadosBanList(janelaPrincipal.getPathUser());
 			ArrayList<Usuario> usuarios = bdBanList.getUsuario(texto);
 			for (Usuario user : usuarios) {
 				Object[] linha = new Object[3];
