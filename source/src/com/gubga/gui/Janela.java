@@ -29,6 +29,7 @@ public abstract class Janela extends JFrame {
 
 	public void definirPropriedades(JFrame janelaPai, String titulo, Dimension dimensao) {
 		setTitle(titulo);
+		setUndecorated(true);
 		if (dimensao == null)
 			pack();
 		else
