@@ -29,7 +29,7 @@ public class TratadorEventosJanelaPrincipal extends MouseAdapter implements Acti
 	public void actionPerformed(ActionEvent evento) {
 
 		// Caso o evento tenha ocorrido no botao Sair.
-		if (evento.getSource() == janelaPrincipal.getBotaoSair()) {
+		if (evento.getSource() == janelaPrincipal.getMenuSair()) {
 			System.exit(0);
 		}
 		
