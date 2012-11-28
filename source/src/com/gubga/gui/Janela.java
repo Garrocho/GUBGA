@@ -1,9 +1,14 @@
 package com.gubga.gui;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.io.File;
 import java.net.URL;
@@ -12,6 +17,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.border.AbstractBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
@@ -22,18 +29,18 @@ public abstract class Janela extends JFrame {
 	public Janela() {
 		super();
 	}
-	
+
 	protected abstract void criarElementos();
-	
+
 	protected abstract void adicionarElementos();
-	
+
 	protected abstract void customizarElementos();
-	
+
 	protected abstract void configurarEventos();
 
 	public void definirPropriedades(JFrame janelaPai, String titulo, Dimension dimensao) {
 		setTitle(titulo);
-		setUndecorated(true);
+		//setUndecorated(true);
 		if (dimensao == null)
 			pack();
 		else
@@ -44,6 +51,34 @@ public abstract class Janela extends JFrame {
 		setVisible(true);
 	}
 	
+	public static class ShadowBorder extends AbstractBorder {
+
+        private static final int RADIUS = 5;
+
+        @Override
+        public boolean isBorderOpaque() {
+            return false;
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c) {
+            return new Insets(RADIUS, RADIUS, RADIUS, RADIUS);
+        }
+
+        @Override
+        public Insets getBorderInsets(Component c, Insets insets) {
+            insets.top = RADIUS;
+            insets.left = RADIUS;
+            insets.bottom = RADIUS;
+            insets.right = RADIUS;
+            return insets;
+        }
+
+        @Override
+    	public void paintBorder(Component component, Graphics g, int j, int k, int l, int i1){
+    	}
+    }
+
 	/** Encontra o recurso no diretorio de recursos do jar
 	 * @param enderecoArquivo <code>String</code> caminho do recurso
 	 * @return <code>URL</code> com o endereco do recurso
@@ -51,15 +86,15 @@ public abstract class Janela extends JFrame {
 	public static URL getResource(String enderecoArquivo){
 		return Janela.class.getResource("/icones/" + enderecoArquivo);
 	}
-	
+
 	/** Janela para abrir arquivos
-	 * @param componentePai <code>Component</code> sobre o qual esta janela será aberta, a qual esta sera "filha"
+	 * @param componentePai <code>Component</code> sobre o qual esta janela serï¿½ aberta, a qual esta sera "filha"
 	 * @param titulo <code>String</code> com o titulo da janela
 	 * @param diretorioCorrente <code>String</code> com o diretorio onde a janela de abrir inicializara, pode ser <code>null</code>
-	 * @param opcaoTodosArquivos <code>boolean</code> informando se a opcao(filtro) Todos Arquivos será mostrada ou não
-	 * @param nomeFiltro <code>String</code> com o nome do filtro de extensões
-	 * @param extensao <code>String...</code> com as extensões usadas no filtro
-	 * @return <code>String</code> com o endereço do arquivo selecionado, caso nenhum arquivo seja selecionado, é retornado <code>null</code>
+	 * @param opcaoTodosArquivos <code>boolean</code> informando se a opcao(filtro) Todos Arquivos serï¿½ mostrada ou nï¿½o
+	 * @param nomeFiltro <code>String</code> com o nome do filtro de extensï¿½es
+	 * @param extensao <code>String...</code> com as extensï¿½es usadas no filtro
+	 * @return <code>String</code> com o endereï¿½o do arquivo selecionado, caso nenhum arquivo seja selecionado, ï¿½ retornado <code>null</code>
 	 * @see  JFileChooser
 	 */
 	public static String janelaAbrirArquivo(Component componentePai, String titulo, String diretorioCorrente, boolean opcaoTodosArquivos, String nomeFiltro, String... extensao){
@@ -85,7 +120,7 @@ public abstract class Janela extends JFrame {
 
 		return janelaAbrir.getSelectedFile() != null ? janelaAbrir.getSelectedFile().getPath() : null;
 	}
-	
+
 	/** 
 	 * Exibe uma caixa de dialogo <code>javax.swing.JFileChooser</code> para 
 	 * o usuario indicar o nome do diretorio que sera aberto. 
@@ -97,7 +132,7 @@ public abstract class Janela extends JFrame {
 	 *        de dialogo.
 	 *        
 	 * @return <code>String</code> com o nome do arquivo a ser aberto. 
-	 *         Se o usuário cancelar a operacao (clicar no botao "Cancelar") sera
+	 *         Se o usuï¿½rio cancelar a operacao (clicar no botao "Cancelar") sera
 	 *         retornado <code>null</code>.
 	 *         
 	 * @see java.awt.Component
@@ -119,7 +154,7 @@ public abstract class Janela extends JFrame {
 
 		return dialogoAbrir.getSelectedFile().getPath();
 	}
-	
+
 	/** 
 	 * Exibe uma caixa de dialogo <code>javax.swing.JFileChooser</code> para 
 	 * o usuario indicar o nome do diretorio e arquivo que sera aberto. 
@@ -131,7 +166,7 @@ public abstract class Janela extends JFrame {
 	 *        de dialogo.
 	 *        
 	 * @return <code>String</code> com o nome do arquivo a ser aberto. 
-	 *         Se o usuário cancelar a operacao (clicar no botao "Cancelar") sera
+	 *         Se o usuï¿½rio cancelar a operacao (clicar no botao "Cancelar") sera
 	 *         retornado <code>null</code>.
 	 *         
 	 * @see java.awt.Component
@@ -157,7 +192,7 @@ public abstract class Janela extends JFrame {
 
 		return nomeArquivo;
 	}
-	
+
 	public class Painel extends JPanel {
 		private static final long serialVersionUID = 1L;
 		private Image bg;
@@ -169,6 +204,7 @@ public abstract class Janela extends JFrame {
 
 		@Override
 		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
 		}
 	}
