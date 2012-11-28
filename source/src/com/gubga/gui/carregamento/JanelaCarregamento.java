@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import com.gubga.gui.EventoMoverJanelaPeloPainel;
 import com.gubga.gui.Janela;
 import com.gubga.gui.carregamento.eventos.TratadorEventosJanelaCarregamento;
 
@@ -82,6 +83,9 @@ public class JanelaCarregamento extends Janela {
 				getThis().dispose();
 			}
 		});
+		EventoMoverJanelaPeloPainel a = new EventoMoverJanelaPeloPainel(painelNorte);
+		this.addMouseListener(a);
+		this.addMouseMotionListener(a);
 	}
 
 	@Override
