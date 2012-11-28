@@ -3,7 +3,6 @@ package com.gubga.classes;
 /**
  * @author Charles Garrocho
  * @author Thiago Garrocho
- *
  */
 public class Usuario {
 	private int UserId;
