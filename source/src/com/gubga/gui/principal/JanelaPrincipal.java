@@ -9,10 +9,13 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.text.ParseException;
 
 import javax.swing.BorderFactory;
@@ -22,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -34,6 +38,7 @@ import com.gubga.classes.TamanhoMaximo;
 import com.gubga.gui.EventoMoverJanelaPeloPainel;
 import com.gubga.gui.Janela;
 import com.gubga.gui.principal.eventos.TratadorEventosJanelaPrincipal;
+import com.sun.awt.AWTUtilities;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
@@ -59,7 +64,7 @@ public class JanelaPrincipal extends Janela {
 	private JTextField campoTextoUserId, campoTextoUserName, campoTextoReason;
 
 	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
-		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
+		//UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
 		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
 		new JanelaPrincipal(null, "C:/Program Files/Garena Plus/Room/user/70290658/ban.dat");
 	}
@@ -74,9 +79,8 @@ public class JanelaPrincipal extends Janela {
 		customizarElementos();
 		configurarEventos();
 		adicionarElementos();
-		setUndecorated(true);
-
-		definirPropriedades(janelaPai, "Gerenciador de Usuários Banidos do Garena", null);
+		this.getRootPane().setBorder(new ShadowBorder());
+		definirPropriedades(janelaPai, "Gerenciador de Usuï¿½rios Banidos do Garena", null);
 	}
 
 	public Janela getThis() {
@@ -88,7 +92,7 @@ public class JanelaPrincipal extends Janela {
 
 		popMenu.add(menuAlternarConta);
 		popMenu.add(menuSair);
-		
+
 		painelSul.add(campoTextoUserId);
 		painelSul.add(campoTextoUserName);
 		painelSul.add(campoTextoReason);
@@ -96,7 +100,7 @@ public class JanelaPrincipal extends Janela {
 
 		painelNorte.add(campoPesquisa);
 		painelNorte.add(botaoConfiguracao);
-		
+
 		painelCentro.add(scrollPane);
 
 		bgPanel = new Painel(new ImageIcon(getResource("teste3.png")));
@@ -154,13 +158,13 @@ public class JanelaPrincipal extends Janela {
 		botaoLimpar = new JButton(new ImageIcon(getResource("limpar.png")));
 		botaoBanir = new JButton(new ImageIcon(getResource("gravar.png")));
 
-		campoPesquisa = new JTextField(20);
-		campoTextoUserId = new JTextField(7);
-		campoTextoUserName = new JTextField(7);
-		campoTextoReason = new JTextField(9);
+		campoPesquisa = new JTextField(15);
+		campoTextoUserId = new JTextField(5);
+		campoTextoUserName = new JTextField(5);
+		campoTextoReason = new JTextField(7);
 
 		String colunasTabela[] = {"UserId", "UserName", "Reason"},
-		dadosTabela[][] = new String[0][0];
+				dadosTabela[][] = new String[0][0];
 
 		tabelaUsuarios = new JTable(new DefaultTableModel(dadosTabela, colunasTabela)){
 			private static final long serialVersionUID = 5727320816550514929L;
@@ -181,35 +185,35 @@ public class JanelaPrincipal extends Janela {
 		painelNorte.setLayout(new FlowLayout());
 		painelCentro.setLayout(new FlowLayout());
 		painelSul.setLayout(new FlowLayout());
-		
+
 		menuAlternarConta.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		menuSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		campoPesquisa.setToolTipText("Digite Aqui o Nick do Usuário.");
+		campoPesquisa.setToolTipText("Digite Aqui o Nick do Usuï¿½rio.");
 		campoPesquisa.setDocument(new TamanhoMaximo(25));
 
 		botaoConfiguracao.setBorder(null);
-		botaoConfiguracao.setText("OPCOES                ");
+		botaoConfiguracao.setText("OPCOES           ");
 		botaoConfiguracao.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		botaoBanir.setBorder(null);
 		botaoBanir.setText("Banir    ");
 		botaoBanir.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		
+
 		campoPesquisa.setPreferredSize(new Dimension(500, 28));
 		campoTextoUserId.setPreferredSize(new Dimension(500, 28));
 		campoTextoUserName.setPreferredSize(new Dimension(500, 28));
 		campoTextoReason.setPreferredSize(new Dimension(500, 28));
-		
+
 		customizarBotao(botaoLimpar);
 
 		botaoLimpar.setText("Limpar");
 
-		botaoBanir.setToolTipText("Bane um usuário de acordo com os Dados Inseridos.");
+		botaoBanir.setToolTipText("Bane um usuï¿½rio de acordo com os Dados Inseridos.");
 		menuSair.setToolTipText("Sair do GUBGA.");
 		menuAlternarConta.setToolTipText("Trocar a Conta Atual por Outra.");
-		botaoLimpar.setToolTipText("Limpar Tabela de Usuários do Garena Plus.");
-		tabelaUsuarios.setToolTipText("Dê um Duplo Clique na Conta a Ser Utilizada.");
+		botaoLimpar.setToolTipText("Limpar Tabela de Usuï¿½rios do Garena Plus.");
+		tabelaUsuarios.setToolTipText("Dï¿½ um Duplo Clique na Conta a Ser Utilizada.");
 
 		tabelaUsuarios.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		tabelaUsuarios.setSelectionBackground(Color.BLACK);
