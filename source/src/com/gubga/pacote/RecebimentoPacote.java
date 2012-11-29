@@ -1,9 +1,9 @@
 package com.gubga.pacote;
 
-import static com.gubga.classes.Descriptografar.byteArrayToInt;
-import static com.gubga.classes.Descriptografar.strFromBytes;
-import static com.gubga.classes.Descriptografar.strFromBytes16;
-import static com.gubga.classes.Descriptografar.unsignedByte;
+import static com.gubga.pacote.Descriptografar.byteArrayToInt;
+import static com.gubga.pacote.Descriptografar.strFromBytes;
+import static com.gubga.pacote.Descriptografar.strFromBytes16;
+import static com.gubga.pacote.Descriptografar.unsignedByte;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -16,7 +16,6 @@ import jpcap.packet.Packet;
 import jpcap.packet.TCPPacket;
 import jpcap.packet.UDPPacket;
 
-import com.gubga.classes.Constantes;
 
 
 public class RecebimentoPacote implements PacketReceiver {
