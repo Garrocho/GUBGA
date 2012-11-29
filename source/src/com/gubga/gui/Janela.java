@@ -1,14 +1,11 @@
 package com.gubga.gui;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.io.File;
 import java.net.URL;
@@ -17,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -40,7 +36,7 @@ public abstract class Janela extends JFrame {
 
 	public void definirPropriedades(JFrame janelaPai, String titulo, Dimension dimensao) {
 		setTitle(titulo);
-		//setUndecorated(true);
+		this.getRootPane().setBorder(new ShadowBorder());
 		if (dimensao == null)
 			pack();
 		else
@@ -53,7 +49,8 @@ public abstract class Janela extends JFrame {
 	
 	public static class ShadowBorder extends AbstractBorder {
 
-        private static final int RADIUS = 5;
+		private static final long serialVersionUID = 1L;
+		private static final int RADIUS = 5;
 
         @Override
         public boolean isBorderOpaque() {
@@ -76,6 +73,7 @@ public abstract class Janela extends JFrame {
 
         @Override
     	public void paintBorder(Component component, Graphics g, int j, int k, int l, int i1){
+        	g.setColor(Color.RED);
     	}
     }
 

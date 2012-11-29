@@ -2,16 +2,16 @@ package com.gubga.gui;
 
 import javax.swing.JMenu;
 
-import com.gubga.gui.principal.JanelaPrincipal;
+import com.gubga.gui.banlist.JanelaBanList;
 
 public abstract class Menu extends JMenu {
 
 	private static final long serialVersionUID = 1L;
-	private JanelaPrincipal janelaPrincipal;
+	private JanelaBanList janelaBanList;
 
-	public Menu(String texto, JanelaPrincipal janelaPrincipal) {
+	public Menu(String texto, JanelaBanList janelaBanList) {
 		super(texto);
-		this.janelaPrincipal = janelaPrincipal;
+		this.janelaBanList = janelaBanList;
 	}
 	
 	protected abstract void criarElementos();
@@ -22,7 +22,7 @@ public abstract class Menu extends JMenu {
 	
 	protected abstract void configurarEventos();
 	
-	protected JanelaPrincipal getJanelaPrincipal() {
-		return janelaPrincipal;
+	protected JanelaBanList getJanelaPrincipal() {
+		return janelaBanList;
 	}
 }

@@ -1,5 +1,6 @@
 package com.gubga.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -10,7 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
+
+import com.gubga.gui.Janela.ShadowBorder;
 
 public abstract class Dialogo extends JDialog {
 
@@ -29,13 +31,14 @@ public abstract class Dialogo extends JDialog {
 	protected abstract void configurarEventos();
 	
 	public void definirPropriedades(JFrame janelaPai, String titulo, Dimension dimensao) {
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle(titulo);
+		this.getRootPane().setBorder(new ShadowBorder());
 		if (dimensao == null)
 			pack();
 		else
 			setSize(dimensao);
-		setUndecorated(true);
+		setModal(true);
+		setBackground(Color.DARK_GRAY);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getResource("garena_logo.png")));
 		setLocationRelativeTo(janelaPai);
 		setResizable(false);
