@@ -5,7 +5,7 @@ import java.text.ParseException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.gubga.gui.principal.JanelaPrincipal;
+import com.gubga.gui.banlist.JanelaBanList;
 
 import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
@@ -19,9 +19,7 @@ public class initGubga {
 	//}
 	
 	public static void main(String args[]) throws UnsupportedLookAndFeelException, ParseException {
-		UIManager.put("Synthetica.window.decoration", Boolean.FALSE);
 		UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
-		//new JanelaCarregamento(null);
-		new JanelaPrincipal(null, null);
+		new JanelaBanList(null, null);
 	}
 }
