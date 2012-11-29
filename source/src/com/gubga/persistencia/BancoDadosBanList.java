@@ -42,7 +42,6 @@ public class BancoDadosBanList extends BancoDados {
 			fechaConexao();
 			return resul;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return resul;
 		}
 	}
@@ -68,7 +67,6 @@ public class BancoDadosBanList extends BancoDados {
 			fechaConexao();
 			return usuarios;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}	
@@ -94,7 +92,6 @@ public class BancoDadosBanList extends BancoDados {
 			fechaConexao();
 			return usuarios;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}	
@@ -114,53 +111,27 @@ public class BancoDadosBanList extends BancoDados {
 			fechaConexao();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
-
+	
 	/**
-	 * Busca candidatos a partir do nome e cargo fornecidos.
+	 * Exclui um Usuario a partir do UserId.
 	 * 
-	 * @param nome um <code>String</code> com o nome do candidato.
-	 * @param cargo um <code>String</code> com o nome do cargo.
-	 * @return um <code>ResultSet</code> com o resultado da pesquisa.
+	 * @param UserId um <code>int</code> com o UserId do Usuario.
 	 * @throws SQLException Dispara uma excecao SQL.
 	 * @throws ClassNotFoundException Dispara uma excecao de Classe nao encontrada.
 	 */
-	public ResultSet obterCandidatoPorCargo(String nome, String cargo) throws ClassNotFoundException, SQLException {
-		SQL = "SELECT numero, nome, partido, cargo FROM candidato WHERE candidato.nome LIKE \'" + nome + "\' AND candidato.nome IN (SELECT candidato.nome FROM candidato WHERE candidato.cargo LIKE \'" + cargo + "\')";
-		resultado = executaComando(SQL);
-		return resultado;
-	}
-
-	/**
-	 * Busca candidatos a partir do cargo fornecido.
-	 * 
-	 * @param cargo um <code>String</code> com o nome do cargo.
-	 * @return um <code>ResultSet</code> com o resultado da pesquisa.
-	 * @throws SQLException Dispara uma excecao SQL.
-	 * @throws ClassNotFoundException Dispara uma excecao de Classe nao encontrada.
-	 */
-	public ResultSet obterCandidatoPorCargo(String cargo) throws ClassNotFoundException, SQLException {
-		SQL = "SELECT numero, nome, partido, cargo FROM candidato WHERE candidato.cargo LIKE \'" + cargo + "\'";
-		resultado = executaComando(SQL);
-		return resultado;
-	}
-
-	/**
-	 * Busca candidatos a partir do numero e cargo fornecidos.
-	 * 
-	 * @param numero um <code>int</code> com o numero do candidato.
-	 * @param cargo um <code>String</code> com o nome do cargo.
-	 * @return um <code>ResultSet</code> com o resultado da pesquisa.
-	 * @throws SQLException Dispara uma excecao SQL.
-	 * @throws ClassNotFoundException Dispara uma excecao de Classe nao encontrada.
-	 */
-	public ResultSet obterCandidatoPorCargo(int numero, String cargo) throws ClassNotFoundException, SQLException {
-		SQL = "SELECT numero, nome, partido, cargo, caminhoFoto FROM candidato WHERE candidato.numero = " + numero + " AND candidato.cargo = \'" + cargo + "\'";
-		resultado = executaComando(SQL);
-		return resultado;
+	public Boolean delUsuario(int UserId) {
+		try {
+			iniciaConexao();
+			SQL = "DELETE FROM Banlist WHERE Banlist.UserId = " + UserId;
+			executaSemRetorno(SQL);
+			fechaConexao();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	/**
@@ -179,18 +150,4 @@ public class BancoDadosBanList extends BancoDados {
 		SQL = "UPDATE candidato SET nome = '" + nome + "', partido = '" + partido + "', cargo = '" + cargo + "', caminhoFoto = '" + caminhoFoto + "' WHERE candidato.numero = " + numeroCandidato + " AND cargo = '" + cargoAnterior + "'";
 		executaSemRetorno(SQL);
 	}
-
-	/**
-	 * Exclui um candidato a partir do numero e nome passados como argumento.
-	 * 
-	 * @param numero um <code>int</code> com o numero do candidato.
-	 * @param nome um <code>String</code> com o nome do cargo.
-	 * @throws SQLException Dispara uma excecao SQL.
-	 * @throws ClassNotFoundException Dispara uma excecao de Classe nao encontrada.
-	 */
-	public void excluirCandidato(int numero, String nome) throws SQLException, ClassNotFoundException {
-		SQL = "DELETE FROM candidato WHERE candidato.numero = " + numero + " AND candidato.nome = '" + nome + "'";
-		executaSemRetorno(SQL);
-	}
-
 }
